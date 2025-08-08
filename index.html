@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vibe Music Homepage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #0e0e0e;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 80px;
+    }
+
+    /* LOGO SECTION */
+    .logo {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      margin-top: 40px;
+      background: radial-gradient(circle, #000 40%, #121212 100%);
+      border: 4px solid transparent;
+      box-shadow:
+        0 0 10px #00f0ff,
+        0 0 30px #00f0ff,
+        0 0 50px #00f0ff,
+        0 0 80px #00f0ff;
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow:
+          0 0 10px #00f0ff,
+          0 0 30px #00f0ff,
+          0 0 50px #00f0ff,
+          0 0 80px #00f0ff;
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow:
+          0 0 15px #00f0ff,
+          0 0 35px #00f0ff,
+          0 0 60px #00f0ff,
+          0 0 100px #00f0ff;
+      }
+    }
+
+    .slogan {
+      margin-top: 20px;
+      font-size: 1.4rem;
+      font-weight: bold;
+      text-align: center;
+      color: #00f0ff;
+    }
+
+    /* ALBUM GRID */
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin: 40px 20px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .album {
+      background-color: #1a1a1a;
+      border: 1px solid #444;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s;
+      box-shadow: 0 4px 12px rgba(0, 240, 255, 0.2);
+      cursor: pointer;
+    }
+
+    .album img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .album:hover {
+      transform: translateY(-5px);
+    }
+
+    .album-details {
+      padding: 15px;
+    }
+
+    .album h3 {
+      color: #00f0ff;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+
+    .album p {
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+
+    /* NAVIGATION BAR */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      padding: 15px 0;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #222;
+    }
+
+    .bottom-nav a {
+      color: #00f0ff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .bottom-nav a:hover {
+      text-shadow: 0 0 8px #00f0ff;
+    }
+    .logo {
+    width: 250px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+.bottom-nav a {
+  color: #00f0ff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bottom-nav i {
+  font-size: 1.4rem;
+  margin-bottom: 5px;
+}
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- LOGO -->
+  
+      <header>
+    <img src="Play.png" alt="My Logo" class="logo">
+
+</header>
+  </div>
+
+  <!-- SLOGAN -->
+  <div class="slogan">Real Music. Real Vibe.<code><p>Home of Amapiano ,Deep House and more...</code></p></div>
+
+  <!-- ALBUM CARDS -->
+  <div class="album-grid">
+    <div class="album" onclick="openAlbum('player.html')">
+      <img src="Uhambo.png" alt="Uhambo Lothando">
+      <div class="album-details">
+        <h3>Uhambo Lothando</h3>
+        <p>Genre: 3 Step Amapiano</p>
+        <p>Artist: BlackLogic</p>
+      </div>
+    </div>
+     <div class="album" onclick="openAlbum('player.html')">
+      <img src="Piano.png" alt="Thukuthela">
+      <div class="album-details">
+        <h3>Thukuthela</h3>
+        <p>Genre: Amapiano Vocals</p>
+        <p>Artist: Thukuthela</p>
+      </div>
+      </div>
+
+    <div class="album" onclick="openAlbum('player.html')">
+      <img src="DJStokie.jpg" alt="DJ Stokie">
+      <div class="album-details">
+        <h3>Sounds of Stokie</h3>
+        <p>Genre: Deep Amapiano</p>
+        <p>Artist: DJ Stokie</p>
+      </div>
+    </div>
+  
+        <div class="album" onclick="openAlbum('player.html')">
+      <img src="Thukzin.webp" alt="Dlala Thukzin">
+      <div class="album-details">
+        <h3>Dlala Thukzin</h3>
+        <p>Genre: 3-Step_Amapiano </p>
+        <p>Artist: Dlala Thukzin</p>
+      </div>
+    </div>
+  </div>
+
+<!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+  <a href="index.html"><i class="fas fa-home"></i><span> Home</span></a>
+  <a href="music.html"><i class="fas fa-compact-disc"></i><span> Music</span></a>
+  <a href="artist.html"><i class="fas fa-microphone"></i><span> Artists</span></a>
+  <a href="contact.html"><i class="fas fa-envelope"></i><span> Contact</span></a>
+</div>
+<script>
+  function openAlbum(songIndex) {
+    window.location.href = `player.html?song=${songIndex}`;
+  }
+</script>
+  <!-- JS to Handle Album Clicks -->
+
+</body>
+</html>
