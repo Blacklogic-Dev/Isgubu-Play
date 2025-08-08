@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vibe Music - Artists</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+    body {
+      background-color: #0e0e0e;
+      color: white;
+      min-height: 100vh;
+      padding: 40px 20px 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 { color: #00f0ff; margin-bottom: 25px; font-weight: 700; text-align: center; user-select: none; }
+
+    /* Artist Grid */
+    .artist-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .artist-card {
+      background-color: #121212;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #00f0ff55 inset;
+      transition: transform 0.3s ease;
+      text-align: center;
+      padding-bottom: 25px; /* add bottom padding */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .artist-card:hover { transform: scale(1.03); }
+    .artist-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 1px solid #222;
+    }
+    .artist-card h3 {
+      color: #00f0ff;
+      margin: 15px 0 5px;
+    }
+    .streams {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 15px; /* space before buttons */
+      user-select: none;
+    }
+
+    /* Buttons */
+    .artist-actions {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: auto; /* push buttons to bottom if needed */
+    }
+    .like-btn, .follow-btn {
+      cursor: pointer;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      transition: background 0.3s ease, color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+      border: 1.8px solid #00f0ff;
+      background-color: rgba(0, 240, 255, 0.1);
+      color: #00f0ff;
+      box-shadow: 0 0 10px #00f0ff44;
+      font-weight: 600;
+      min-width: 110px;
+      justify-content: center;
+    }
+    .like-btn.liked {
+      background-color: #ff0055;
+      border-color: #ff0055;
+      color: white;
+      box-shadow: 0 0 15px #ff0055aa;
+    }
+    .follow-btn.followed {
+      background-color: #00f0ff;
+      color: #000;
+      box-shadow: 0 0 15px #00f0ffaa;
+    }
+    .artist-actions {
+  display: flex;
+  flex-direction: column;   /* stack vertically */
+  align-items: center;      /* center horizontally */
+  gap: 12px;                /* vertical spacing between buttons */
+  margin-top: auto;
+}
+
+    /* Bottom nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%;
+      background-color: #000;
+      padding: 12px 0;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #222;
+      box-shadow: 0 0 15px #00f0ff99 inset;
+      z-index: 100;
+    }
+    .bottom-nav a {
+      color: #00f0ff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: text-shadow 0.3s ease;
+    }
+    .bottom-nav a:hover { text-shadow: 0 0 10px #00f0ff; }
+    .bottom-nav i { font-size: 1.4rem; }
+  </style>
+</head>
+<body>
+
+  <h1>Artists</h1>
+
+  <div class="artist-grid">
+    <div class="artist-card">
+      <img src="Mee.jpg" alt="BlackLogic" />
+      <h3>BlackLogic</h3>
+      <p class="streams">10.5M Streams</p>
+      <div class="artist-actions">
+        <div class="like-btn"><i class="fas fa-heart"></i> Like</div>
+        
+        <div class="follow-btn"><i class="fas fa-user-plus"></i> Follow</div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <img src="piano2.jpg" alt="Thukuthela" />
+      <h3>Thukuthela</h3>
+      <p class="streams">11.8M Streams</p>
+      <div class="artist-actions">
+        <div class="like-btn"><i class="fas fa-heart"></i> Like</div>
+        <div class="follow-btn"><i class="fas fa-user-plus"></i> Follow</div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <img src="DJ.jpg" alt="DJ Stokie" />
+      <h3>DJ Stokie</h3>
+      <p class="streams">53.2M Streams</p>
+      <div class="artist-actions">
+        <div class="like-btn"><i class="fas fa-heart"></i> Like</div>
+        <div class="follow-btn"><i class="fas fa-user-plus"></i> Follow</div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <img src="Dlala.jpg" alt="Dlala Thukzin" />
+      <h3>Dlala Thukzin</h3>
+      <p class="streams">80.1M Streams</p>
+      <div class="artist-actions">
+        <div class="like-btn"><i class="fas fa-heart"></i> Like</div>
+        <div class="follow-btn"><i class="fas fa-user-plus"></i> Follow</div>
+      </div>
+    </div>
+        <div class="artist-card">
+      <img src="Impilo.jpg" alt="BlackLogic" />
+      <h3>CocoSA</h3>
+      <p class="streams">14.5M Streams</p>
+      <div class="artist-actions">
+        <div class="like-btn"><i class="fas fa-heart"></i> Like</div>
+        
+        <div class="follow-btn"><i class="fas fa-user-plus"></i> Follow</div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <img src="Ngisakuthanda.jpg" alt="Thukuthela" />
+      <h3>Zee Nxumalo</h3>
+      <p class="streams">17.8M Streams</p>
+      <div class="artist-actions">
+        <div class="like-btn"><i class="fas fa-heart"></i> Like</div>
+        <div class="follow-btn"><i class="fas fa-user-plus"></i> Follow</div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <img src="Mawhoo.jpg" alt="DJ Stokie" />
+      <h3>Mawhoo</h3>
+      <p class="streams">69.2M Streams</p>
+      <div class="artist-actions">
+        <div class="like-btn"><i class="fas fa-heart"></i> Like</div>
+        <div class="follow-btn"><i class="fas fa-user-plus"></i> Follow</div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <img src="Jazz.jpg" alt="Dlala Thukzin" />
+      <h3>JazzWorx</h3>
+      <p class="streams">76.3M Streams</p>
+      <div class="artist-actions">
+        <div class="like-btn"><i class="fas fa-heart"></i> Like</div>
+        <div class="follow-btn"><i class="fas fa-user-plus"></i> Follow</div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <img src="Small.jpg" alt="DJ Stokie" />
+      <h3>Kabza De Small</h3>
+      <p class="streams">106.2M Streams</p>
+      <div class="artist-actions">
+        <div class="like-btn"><i class="fas fa-heart"></i> Like</div>
+        <div class="follow-btn"><i class="fas fa-user-plus"></i> Follow</div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <img src="Tman.jpg" alt="Dlala Thukzin" />
+      <h3>T-man Xpress</h3>
+      <p class="streams">29.1M Streams</p>
+      <div class="artist-actions">
+        <div class="like-btn"><i class="fas fa-heart"></i> Like</div>
+        <div class="follow-btn"><i class="fas fa-user-plus"></i> Follow</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="index.html"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="music.html"><i class="fas fa-compact-disc"></i><span>Music</span></a>
+    <a href="artist.html"><i class="fas fa-microphone"></i><span>Artists</span></a>
+    <a href="contact.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
+  </div>
+
+<script>
+  document.querySelectorAll('.like-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.classList.toggle('liked');
+      this.innerHTML = this.classList.contains('liked') 
+        ? '<i class="fas fa-heart"></i> Liked' 
+        : '<i class="fas fa-heart"></i> Like';
+    });
+  });
+
+  document.querySelectorAll('.follow-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.classList.toggle('followed');
+      this.innerHTML = this.classList.contains('followed') 
+        ? '<i class="fas fa-user-check"></i> Followed' 
+        : '<i class="fas fa-user-plus"></i> Follow';
+    });
+  });
+</script>
+
+</body>
+</html>
