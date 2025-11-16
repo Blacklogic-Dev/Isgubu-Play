@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vibe Music - Music Library</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background-color: #0e0e0e;
+      color: white;
+      min-height: 100vh;
+      padding: 40px 20px 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #00f0ff;
+      margin-bottom: 25px;
+      font-weight: 700;
+      text-align: center;
+      user-select: none;
+    }
+    /* Search bar */
+    #searchBar {
+      width: 320px;
+      padding: 10px 15px;
+      border-radius: 25px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+      box-shadow: 0 0 8px #00f0ff88 inset;
+      background-color: #121212;
+      color: white;
+      margin-bottom: 30px;
+      transition: box-shadow 0.3s ease;
+    }
+    #searchBar:focus {
+      box-shadow: 0 0 15px #00f0ff;
+    }
+    /* Song list */
+    .song-list {
+      width: 320px;
+      max-height: 480px;
+      overflow-y: auto;
+      border-radius: 15px;
+      background-color: #121212;
+      box-shadow:
+        0 0 10px #00f0ff55 inset;
+      padding: 10px 0;
+    }
+    /* Single song item */
+    .song-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      border-bottom: 1px solid #222;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .song-item:hover {
+      background-color: #00f0ff22;
+    }
+    /* Album cover */
+    .cover {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-right: 15px;
+      box-shadow: 0 0 8px #00f0ffbb;
+      flex-shrink: 0;
+    }
+    /* Song info */
+    .info {
+      flex-grow: 1;
+      overflow: hidden;
+    }
+    .title {
+      font-weight: 600;
+      color: #00f0ff;
+      font-size: 1rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      user-select: none;
+    }
+    .artist {
+      font-size: 0.85rem;
+      color: #aaa;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      user-select: none;
+    }
+    /* Play button */
+    .play-btn {
+      color: #00f0ff;
+      font-size: 1.4rem;
+      padding-left: 15px;
+      transition: color 0.2s ease;
+      flex-shrink: 0;
+    }
+    .play-btn:hover {
+      color: #0ff;
+      text-shadow: 0 0 15px #0ff;
+    }
+    /* Bottom nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      padding: 12px 0;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #222;
+      box-shadow: 0 0 15px #00f0ff99 inset;
+      user-select: none;
+      z-index: 100;
+    }
+    .bottom-nav a {
+      color: #00f0ff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: text-shadow 0.3s ease;
+    }
+    .bottom-nav a:hover {
+      text-shadow: 0 0 10px #00f0ff;
+    }
+    .bottom-nav i {
+      font-size: 1.4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Music Library</h1>
+
+  <input
+    type="text"
+    id="searchBar"
+    placeholder="Search songs or artists..."
+    autocomplete="off"
+  />
+
+  <div class="song-list" id="songList">
+    <!-- Songs will be dynamically injected here -->
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="index.html"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="music.html"><i class="fas fa-compact-disc"></i><span>Music</span></a>
+    <a href="artist.html"><i class="fas fa-microphone"></i><span>Artists</span></a>
+    <a href="contact.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
+  </div>
+
+<script>
+    // Playlist example with 2 songs (expand as needed)
+    const playlist = [
+      {
+        title: "Inkanyezi",
+        artist: "BlackLogic",
+        file: "Inkanyezi.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Inkanyezi-mp3"
+      },
+    {
+        title: "Selimathunzi",
+        artist: "DJ Stokie x Zee_Nhle",
+        file: "Selimathunzi.mp3",
+        cover: "DJStokie.jpg",
+        subtitle: "Inkanyezi-mp3"
+      },
+
+      {
+        title: "Nginike",
+        artist: "BlackLogic ft Ndlunkulu",
+        file: "Nginike.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Nginike-mp3"
+      },
+        {
+        title: "Mina Nawe",
+        artist: "Soa Mattrix x Mashudu ",
+        file: "Mina.mp3",
+        cover: "Mina.jpg",
+        subtitle: "Mina Nawe-mp3"
+      },
+
+      {
+        title: "Okhethiweyo",
+        artist: "BlackLogic ft Ndlunkulu",
+        file: "Okhethiweyo.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Okhethiweyo-mp3"
+      },
+        {
+        title: "Impilo Nawe",
+        artist: "Coco sa x Dearson",
+        file: "Impilo.mp3",
+        cover: "Impilo.jpg",
+        subtitle: "Impilo Nawe-mp3"
+      },
+    {
+        title: "Tholukuthi",
+        artist: "Thukuthela x Dlala Thikzin x Mawhoo",
+        file: "Tholukuthi.mp3",
+        cover: "Piano.png",
+        subtitle: "Tholukuthi-mp3"
+      },
+      
+      {
+        title: "Umzuzu Wokugcina",
+        artist: "BlackLogic",
+        file: "Umzuzu.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Umzuzu Wokugcina-mp3"
+      },
+      
+    {
+        title: "Lwanduthando",
+        artist: "BlackLogic",
+        file: "Lwah.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Lwa-mp3"
+      },
+                 {
+        title: "Amazwe",
+        artist: "Kabza De Small x Mawhoo x Mthunzi",
+        file: "Amazwe.mp3",
+        cover: "Amazwe.jpg",
+        subtitle: "Amazwe-mp3"
+      },
+      {
+        title: "Yini Nah?",
+        artist: "BlackLogic",
+        file: "Yini.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Yini Nah?-mp3"
+      },
+             {
+        title: "Ngisakuthanda",
+        artist: "Zee Nxumalo x Tbo",
+        file: "Ngisakuthanda.mp3",
+        cover: "Ngisakuthanda.jpg",
+        subtitle: "Ngisakuthanda-mp3"
+      },
+
+    {
+        title: "Amalanga",
+        artist: "BlackLogic",
+        file: "Amalanga.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Amalanga-mp3"
+      },
+                  {
+        title: "Mali",
+        artist: "Dlala Thukzin x Zee Ncumalo",
+        file: "Mali.mp3",
+        cover: "Mali.png",
+        subtitle: "Mali-mp3"
+      },
+      {
+        title: "Izinyembezi",
+        artist: "BlackLogic",
+        file: "Izinyembezi.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Izinyembezi-mp3"
+      },
+        {
+        title: "Xola",
+        artist: "Msongi x Cici x Sir Trill",
+        file: "Xola.mp3",
+        cover: "Xola.jpg",
+        subtitle: "Xola-mp3"
+      },
+
+            {
+        title: "Iyasho",
+        artist: "BlackLogic",
+        file: "Iyasho.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Iyakho-mp3"
+      },
+      {
+        title: "Vuma Dlozi Lami",
+        artist: "Issah sisdoh x Ancestral rituals",
+        file: "Vuma.mp3",
+        cover: "Vuma.jpg",
+        subtitle: "Vuma Dlozi Lami-mp3"
+      },
+        {
+        title: "Bengicela",
+        artist: "Mawhoo xThukuthela x Jazzworx x GL CeeJay ",
+        file: "Bengicela.mp3",
+        cover: "Bengicela.jpg",
+        subtitle: "Bengicela-mp3"
+      },
+
+
+
+            {
+        title: "Kwelanga 2.0",
+        artist: "Bassie x M-Toch xTman Xpress x LeeMcKrazy",
+        file: "Kwelanga.mp3",
+        cover: "Kwelanga.jpg",
+        subtitle: "Kwelanga 2.0-mp3"
+      },
+          
+
+
+
+
+
+    ];
+
+  const searchBar = document.getElementById("searchBar");
+  const songList = document.getElementById("songList");
+
+  // Render songs list function
+  function renderSongs(songs) {
+    songList.innerHTML = ""; // clear existing
+
+    if (songs.length === 0) {
+      songList.innerHTML = `<p style="color:#777; text-align:center; padding:20px;">No songs found</p>`;
+      return;
+    }
+
+    songs.forEach((song, index) => {
+      const songDiv = document.createElement("div");
+      songDiv.classList.add("song-item");
+
+      // Clicking anywhere on item also plays
+      songDiv.addEventListener("click", () => {
+        goToPlayer(index);
+      });
+
+      // Album cover img
+      const coverImg = document.createElement("img");
+      coverImg.src = song.cover;
+      coverImg.alt = song.title + " cover";
+      coverImg.classList.add("cover");
+
+      // Song info container
+      const infoDiv = document.createElement("div");
+      infoDiv.classList.add("info");
+
+      const titleEl = document.createElement("div");
+      titleEl.classList.add("title");
+      titleEl.textContent = song.title;
+
+      const artistEl = document.createElement("div");
+      artistEl.classList.add("artist");
+      artistEl.textContent = song.artist;
+
+      infoDiv.appendChild(titleEl);
+      infoDiv.appendChild(artistEl);
+
+      // Play button icon
+      const playBtn = document.createElement("i");
+      playBtn.classList.add("fas", "fa-play", "play-btn");
+      playBtn.title = "Play " + song.title;
+      playBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // prevent bubbling to songDiv click
+        goToPlayer(index);
+      });
+
+      songDiv.appendChild(coverImg);
+      songDiv.appendChild(infoDiv);
+      songDiv.appendChild(playBtn);
+
+      songList.appendChild(songDiv);
+    });
+  }
+
+  // Search filter
+  searchBar.addEventListener("input", () => {
+    const query = searchBar.value.toLowerCase();
+    const filteredSongs = playlist.filter(
+      (song) =>
+        song.title.toLowerCase().includes(query) ||
+        song.artist.toLowerCase().includes(query)
+    );
+    renderSongs(filteredSongs);
+  });
+
+  // Redirect to player with song index in URL query param
+  function goToPlayer(index) {
+    // Pass index as query param "song"
+    window.location.href = `player.html?song=${index}`;
+  }
+
+  // Initially render full list
+  renderSongs(playlist);
+</script>
+</body>
+</html>
