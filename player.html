@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vibe Music Player - Inkanyezi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+  <style>
+    /* Reset & base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background-color: #0e0e0e;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 20px 120px;
+    }
+
+    /* Album cover container */
+    .album-cover {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      background: #121212;
+      border-radius: 0 0 25px 25px;
+      overflow: hidden;
+      box-shadow:
+        0 0 15px #00f0ff,
+        inset 0 0 30px #00f0ff;
+      margin-bottom: 25px;
+      user-select: none;
+    }
+
+    /* Top banner on album */
+    .album-cover .top-banner {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 240, 255, 0.8);
+      color: #000;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      padding: 6px 0;
+      text-align: center;
+      letter-spacing: 1px;
+      user-select: none;
+      z-index: 10;
+    }
+
+    /* Subtitle under banner */
+    .album-cover .subtitle {
+      position: absolute;
+      top: 26px;
+      width: 100%;
+      background: rgba(0, 240, 255, 0.4);
+      color: #000;
+      font-weight: 500;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 4px 0;
+      letter-spacing: 0.8px;
+      user-select: none;
+      z-index: 10;
+    }
+
+    /* Album image */
+    .album-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 0 0 25px 25px;
+      filter: brightness(0.9);
+    }
+
+    /* Song title */
+    .song-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #00f0ff;
+      margin-bottom: 6px;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* Artist name */
+    .artist-name {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #ccc;
+      margin-bottom: 30px;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* Audio controls container */
+    .audio-controls {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Time display container */
+    .time-display {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #00f0ff;
+      font-weight: 600;
+      user-select: none;
+      font-family: monospace;
+      letter-spacing: 1.5px;
+    }
+
+    /* Progress bar container */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background: #222;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 0 8px #00f0ff88 inset;
+    }
+
+    /* Progress bar fill */
+    .progress-bar {
+      height: 100%;
+      background: #00f0ff;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* Voice waveform container */
+    .waveform {
+      width: 100%;
+      height: 40px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2px;
+      user-select: none;
+    }
+
+    /* Individual bars */
+    .bar {
+      flex: 1 0 2px;
+      height: 15px;
+      background: #00f0ff;
+      border-radius: 3px;
+      opacity: 0.6;
+      animation: wave 1.2s infinite ease-in-out;
+      transform-origin: center bottom;
+    }
+
+    /* Delay pattern for waves */
+    .bar:nth-child(odd) {
+      animation-delay: 0s;
+    }
+    .bar:nth-child(even) {
+      animation-delay: 0.6s;
+    }
+
+    @keyframes wave {
+      0%, 100% {
+        transform: scaleY(0.3);
+        opacity: 0.4;
+      }
+      50% {
+        transform: scaleY(1);
+        opacity: 1;
+      }
+    }
+
+    /* Player buttons container */
+    .player-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 35px;
+      align-items: center;
+      margin-top: 20px;
+      user-select: none;
+    }
+
+    /* Shuffle toggle */
+    .btn-shuffle {
+      cursor: pointer;
+      color: #00f0ff;
+      font-size: 1.6rem;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      position: relative;
+    }
+    .btn-shuffle.active {
+      color: #0ff;
+      text-shadow:
+        0 0 10px #0ff,
+        0 0 20px #0ff;
+    }
+
+    /* Repeat toggle */
+    .btn-repeat {
+      cursor: pointer;
+      color: #00f0ff;
+      font-size: 1.6rem;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      position: relative;
+    }
+    .btn-repeat.active {
+      color: #0ff;
+      text-shadow:
+        0 0 10px #0ff,
+        0 0 20px #0ff;
+    }
+
+    /* Control buttons */
+    .btn-control {
+      cursor: pointer;
+      color: #00f0ff;
+      font-size: 2.5rem;
+      transition: color 0.2s ease;
+    }
+    .btn-control:hover {
+      color: #0ff;
+      text-shadow: 0 0 15px #0ff;
+    }
+
+    /* Bottom navigation bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      padding: 12px 0;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #222;
+      box-shadow: 0 0 15px #00f0ff99 inset;
+      user-select: none;
+      z-index: 100;
+    }
+
+    .bottom-nav a {
+      color: #00f0ff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: text-shadow 0.3s ease;
+    }
+
+    .bottom-nav a:hover {
+      text-shadow: 0 0 10px #00f0ff;
+    }
+
+    .bottom-nav i {
+      font-size: 1.4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Album cover with banner -->
+  <div class="album-cover">
+    <div class="top-banner">NOW PLAYING</div>
+    <div class="subtitle" id="subtitle">Inkanyezi-mp3</div>
+    <img src="Play.png" alt="Inkanyezi Album Cover" id="albumArt" />
+  </div>
+
+  <!-- Title and Artist -->
+  <h3 class="song-title" id="songTitle">Inkanyezi</h3>
+  <h6 class="artist-name" id="artistName">BlackLogic</h6>
+
+  <!-- Audio Controls Section -->
+  <div class="audio-controls">
+
+    <!-- Time display -->
+    <div class="time-display">
+      <span id="currentTime">0:00</span>
+      <span id="remainingTime">-0:00</span>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Voice waveform animation -->
+    <div class="waveform" id="waveform">
+      <!-- 30 bars generated by JS -->
+    </div>
+
+    <!-- Player Buttons -->
+    <div class="player-buttons">
+
+      <i class="fas fa-backward btn-control" id="prevBtn" title="Previous"></i>
+      <i class="fas fa-play btn-control" id="playPauseBtn" title="Play/Pause"></i>
+      <i class="fas fa-forward btn-control" id="nextBtn" title="Next"></i>
+    </div>
+      <i class="fas fa-repeat btn-repeat" id="repeatBtn" title="Repeat"></i>
+            <i class="fas fa-random btn-shuffle" id="shuffleBtn" title="Shuffle"></i>
+  </div>
+
+  <!-- Audio Element (hidden) -->
+  <audio id="audio" preload="metadata"></audio>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="index.html"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="music.html"><i class="fas fa-compact-disc"></i><span>Music</span></a>
+    <a href="artist.html"><i class="fas fa-microphone"></i><span>Artists</span></a>
+    <a href="contact.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
+  </div>
+
+  <script>
+    // Playlist example with 2 songs (expand as needed)
+    const playlist = [
+      {
+        title: "Inkanyezi",
+        artist: "BlackLogic",
+        file: "Inkanyezi.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Inkanyezi-mp3"
+      },
+    {
+        title: "Selimathunzi",
+        artist: "DJ Stokie x Zee_Nhle",
+        file: "Selimathunzi.mp3",
+        cover: "DJStokie.jpg",
+        subtitle: "Inkanyezi-mp3"
+      },
+
+      {
+        title: "Nginike",
+        artist: "BlackLogic ft Ndlunkulu",
+        file: "Nginike.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Nginike-mp3"
+      },
+        {
+        title: "Mina Nawe",
+        artist: "Soa Mattrix x Mashudu ",
+        file: "Mina.mp3",
+        cover: "Mina.jpg",
+        subtitle: "Mina Nawe-mp3"
+      },
+
+      {
+        title: "Okhethiweyo",
+        artist: "BlackLogic ft Ndlunkulu",
+        file: "Okhethiweyo.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Okhethiweyo-mp3"
+      },
+        {
+        title: "Impilo Nawe",
+        artist: "Coco sa x Dearson",
+        file: "Impilo.mp3",
+        cover: "Impilo.jpg",
+        subtitle: "Impilo Nawe-mp3"
+      },
+    {
+        title: "Tholukuthi",
+        artist: "Thukuthela x Dlala Thikzin x Mawhoo",
+        file: "Tholukuthi.mp3",
+        cover: "Piano.png",
+        subtitle: "Tholukuthi-mp3"
+      },
+      
+      {
+        title: "Umzuzu Wokugcina",
+        artist: "BlackLogic",
+        file: "Umzuzu.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Umzuzu Wokugcina-mp3"
+      },
+      
+    {
+        title: "Lwanduthando",
+        artist: "BlackLogic",
+        file: "Lwah.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Lwa-mp3"
+      },
+                 {
+        title: "Amazwe",
+        artist: "Kabza De Small x Mawhoo x Mthunzi",
+        file: "Amazwe.mp3",
+        cover: "Amazwe.jpg",
+        subtitle: "Amazwe-mp3"
+      },
+      {
+        title: "Yini Nah?",
+        artist: "BlackLogic",
+        file: "Yini.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Yini Nah?-mp3"
+      },
+             {
+        title: "Ngisakuthanda",
+        artist: "Zee Nxumalo x Tbo",
+        file: "Ngisakuthanda.mp3",
+        cover: "Ngisakuthanda.jpg",
+        subtitle: "Ngisakuthanda-mp3"
+      },
+
+    {
+        title: "Amalanga",
+        artist: "BlackLogic",
+        file: "Amalanga.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Amalanga-mp3"
+      },
+                  {
+        title: "Mali",
+        artist: "Dlala Thukzin x Zee Ncumalo",
+        file: "Mali.mp3",
+        cover: "Mali.png",
+        subtitle: "Mali-mp3"
+      },
+      {
+        title: "Izinyembezi",
+        artist: "BlackLogic",
+        file: "Izinyembezi.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Izinyembezi-mp3"
+      },
+        {
+        title: "Xola",
+        artist: "Msongi x Cici x Sir Trill",
+        file: "Xola.mp3",
+        cover: "Xola.jpg",
+        subtitle: "Xola-mp3"
+      },
+
+            {
+        title: "Iyasho",
+        artist: "BlackLogic",
+        file: "Iyasho.mp3",
+        cover: "Uhambo.png",
+        subtitle: "Iyakho-mp3"
+      },
+      {
+        title: "Vuma Dlozi Lami",
+        artist: "Issah sisdoh x Ancestral rituals",
+        file: "Vuma.mp3",
+        cover: "Vuma.jpg",
+        subtitle: "Vuma Dlozi Lami-mp3"
+      },
+        {
+        title: "Bengicela",
+        artist: "Mawhoo xThukuthela x Jazzworx x GL CeeJay ",
+        file: "Bengicela.mp3",
+        cover: "Bengicela.jpg",
+        subtitle: "Bengicela-mp3"
+      },
+
+
+
+            {
+        title: "Kwelanga 2.0",
+        artist: "Bassie x M-Toch xTman Xpress x LeeMcKrazy",
+        file: "Kwelanga.mp3",
+        cover: "Kwelanga.jpg",
+        subtitle: "Kwelanga 2.0-mp3"
+      },
+          
+
+
+
+
+
+    ];
+
+
+    
+
+
+    const audio = document.getElementById('audio');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    const repeatBtn = document.getElementById('repeatBtn');
+
+    const progressBar = document.getElementById('progressBar');
+    const progressContainer = document.getElementById('progressContainer');
+
+    const currentTimeEl = document.getElementById('currentTime');
+    const remainingTimeEl = document.getElementById('remainingTime');
+
+    const albumArt = document.getElementById('albumArt');
+    const songTitle = document.getElementById('songTitle');
+    const artistName = document.getElementById('artistName');
+    const subtitleEl = document.getElementById('subtitle');
+
+    const waveform = document.getElementById('waveform');
+
+    let currentIndex = 0;
+    let isPlaying = false;
+    let isShuffle = false;
+    let isRepeat = false;
+
+    // Create 30 bars in waveform
+    for(let i=0; i<30; i++) {
+      const bar = document.createElement('div');
+      bar.classList.add('bar');
+      // stagger animation delay randomly
+      bar.style.animationDelay = (Math.random()*1.2) + 's';
+      waveform.appendChild(bar);
+    }
+
+    function loadSong(index) {
+      const song = playlist[index];
+      audio.src = song.file;
+      songTitle.textContent = song.title;
+      artistName.textContent = song.artist;
+      albumArt.src = song.cover;
+      subtitleEl.textContent = song.subtitle;
+      resetProgress();
+    }
+
+    function resetProgress() {
+      progressBar.style.width = '0%';
+      currentTimeEl.textContent = '0:00';
+      remainingTimeEl.textContent = '-0:00';
+    }
+
+    function formatTime(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = Math.floor(seconds % 60);
+      return `${min}:${sec < 10 ? '0' + sec : sec}`;
+    }
+
+    function updateTimeDisplay() {
+      const current = audio.currentTime;
+      const duration = audio.duration || 0;
+      currentTimeEl.textContent = formatTime(current);
+      remainingTimeEl.textContent = '-' + formatTime(duration - current);
+    }
+
+    // Play/pause toggle
+    playPauseBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+    });
+
+    audio.addEventListener('play', () => {
+      isPlaying = true;
+      playPauseBtn.classList.replace('fa-play', 'fa-pause');
+      startWaveform();
+    });
+
+    audio.addEventListener('pause', () => {
+      isPlaying = false;
+      playPauseBtn.classList.replace('fa-pause', 'fa-play');
+      stopWaveform();
+    });
+
+    audio.addEventListener('ended', () => {
+      if (isRepeat) {
+        audio.currentTime = 0;
+        audio.play();
+      } else {
+        nextSong();
+      }
+    });
+    
+
+    // Progress bar update
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) {
+        const progressPercent = (audio.currentTime / audio.duration) * 100;
+        progressBar.style.width = progressPercent + '%';
+        updateTimeDisplay();
+      }
+    });
+
+    // Seek in song on progress bar click
+    progressContainer.addEventListener('click', (e) => {
+      const width = progressContainer.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audio.duration;
+
+      if (duration) {
+        audio.currentTime = (clickX / width) * duration;
+      }
+    });
+
+    // Shuffle toggle
+    shuffleBtn.addEventListener('click', () => {
+      isShuffle = !isShuffle;
+      shuffleBtn.classList.toggle('active', isShuffle);
+    });
+
+    // Repeat toggle
+    repeatBtn.addEventListener('click', () => {
+      isRepeat = !isRepeat;
+      repeatBtn.classList.toggle('active', isRepeat);
+    });
+
+    // Previous song
+    prevBtn.addEventListener('click', () => {
+      if (isShuffle) {
+        currentIndex = Math.floor(Math.random() * playlist.length);
+      } else {
+        currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+      }
+      loadSong(currentIndex);
+      audio.play();
+    });
+
+    // Next song
+    nextBtn.addEventListener('click', () => {
+      nextSong();
+    });
+
+    function nextSong() {
+      if (isShuffle) {
+        currentIndex = Math.floor(Math.random() * playlist.length);
+      } else {
+        currentIndex = (currentIndex + 1) % playlist.length;
+      }
+      loadSong(currentIndex);
+      audio.play();
+    }
+
+    // Waveform animation control
+    let waveInterval;
+    function startWaveform() {
+      waveform.querySelectorAll('.bar').forEach((bar) => {
+        bar.style.animationPlayState = 'running';
+      });
+      waveInterval = setInterval(() => {
+        waveform.querySelectorAll('.bar').forEach((bar) => {
+          const height = 10 + Math.random() * 40;
+          bar.style.height = height + 'px';
+          // random opacity between 0.3 and 0.9
+          bar.style.opacity = (0.3 + Math.random() * 0.6).toFixed(2);
+        });
+      }, 150);
+    }
+    function stopWaveform() {
+      waveform.querySelectorAll('.bar').forEach((bar) => {
+        bar.style.animationPlayState = 'paused';
+        bar.style.height = '15px';
+        bar.style.opacity = '0.6';
+      });
+      clearInterval(waveInterval);
+    }
+
+    // Initialize
+    loadSong(currentIndex);
+    stopWaveform();
+    // Helper: get query params
+function getQueryParam(name) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name);
+}
+
+// Get "song" from query
+const songIndexParam = getQueryParam("song");
+let currentSongIndex = 0;
+
+if (songIndexParam !== null) {
+  const index = parseInt(songIndexParam, 10);
+  if (!isNaN(index) && index >= 0 && index < playlist.length) {
+    currentSongIndex = index;
+  }
+}
+
+// Load the song
+loadSong(currentSongIndex);
+
+// Autoplay the song
+audio.play().catch(err => {
+  console.log("Autoplay blocked, waiting for user interaction", err);
+});
+  </script>
+</body>
+</html>
